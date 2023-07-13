@@ -27,11 +27,10 @@ def main():
    term.ciDebug( f"Terrengsykkelforumet meldingsnedlaster startet {logDate}" )
    term.ciDebug( "===============================================================")
    term.ciPrint( " ")
-
-   #headers = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36' }
-
+   
    secretFile = Path( "secret.json")
    
+   # Sjekk secret-filen etter beste evne
    if ( secretFile.is_file() ):
    
       with open( secretFile, "r" ) as inputFp:
@@ -141,13 +140,9 @@ def main():
          term.ciInfo( f"Fant {len(tmpThreads)} meldingstråder på side {page}")
          jsonLog[logDate]["threads"] += len(tmpThreads)
          threads.update( tmpThreads )
-         
-      #with open( Path("fetched_memberlist", "memberlists", f"sb{sortBy}", f"memberlist_{i:03d}.htm"), "w", encoding="iso-8859-1" ) as fetchfile:
-      #   fetchfile.write(r.text)
-      #   fetchfile.close()
    
-      #finishDate = datetime.now().strftime( "%Y-%m-%d %H:%M" )
-      #jsonLog[logDate] = { "pageFrom": pageFrom, "pageTo": i, "sortBy": sortBy, "finishTime": finishDate }
+      finishDate = datetime.now().strftime( "%Y-%m-%d %H:%M" )
+      jsonLog[logDate]["finishDate"] = finishDate
       with open( jsonLogPath, "w" ) as inputFp:
          inputFp.write( json.dumps( jsonLog, indent=3, ensure_ascii=False ) )
          inputFp.close()
@@ -160,8 +155,6 @@ def main():
    for thread in threads.values():
    
       page = 1
-      
-      #print(json.dumps( thread, indent=3 ))
    
       fetchUrl = f"https://www.terrengsykkelforumet.no/ubbthreads.php?ubb=viewmessage&message={thread['threadId']}"
       
@@ -232,14 +225,11 @@ def parseThreadPage( s, term ):
    
    postRows = soup.find_all( "tr", id = postRowRe )
    
-   #term.ciDebug( f"Fant {len(postRows)} meldingstråder" )
-   
    threads = {}
    
    for postRow in postRows:
    
       tmpThread = {}
-      #print( str( postRow ) )
       
       if ( titleHref := postRow.find( "a", { "href": threadTitleRe } ) ):
          tmpThread["title"] = titleHref.decode_contents()
