@@ -1,0 +1,3 @@
+[submodule "cilogger.git"]
+	path = cilogger
+	url = https://github.com/helgelangen/cilogger.git
