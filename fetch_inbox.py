@@ -1,4 +1,4 @@
-
+# coding=utf-8
 from pathlib import Path
 import httpx
 import time
@@ -55,6 +55,7 @@ def main():
    # Sett cookies for innlogging
    cookies = httpx.Cookies()
    cookies.set("redirect_visited", "true", domain="www.terrengsykkelforumet.no")
+   cookies.set("redirect_visited_new_new", "true", domain="www.terrengsykkelforumet.no")
    cookies.set("terrubbt_myid", secrets["terrubbt_myid"],  path="/", domain="www.terrengsykkelforumet.no")
    cookies.set("terrubbt_hash", secrets["terrubbt_hash"], path="/", domain="www.terrengsykkelforumet.no")
    cookies.set("terrubbt_mysess", secrets["terrubbt_mysess"], path="/", domain="www.terrengsykkelforumet.no")
