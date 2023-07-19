@@ -95,7 +95,7 @@ def main():
    if ( r.status_code == 200 ):
 
       jsonLog[logDate]["inboxpages"] += 1
-      with open( Path( "fetched_messages", f"innboks_{page:03d}.htm" ), "w" ) as inboxFp:
+      with open( Path( "fetched_messages", f"innboks_{page:03d}.htm" ), "w", encoding = "iso-8859-1"  ) as inboxFp:
          inboxFp.write( r.text )
          inboxFp.close()
       
@@ -133,7 +133,7 @@ def main():
       if ( r.status_code == 200 ):
    
          jsonLog[logDate]["inboxpages"] += 1
-         with open( Path( "fetched_messages", f"innboks_{page:03d}.htm" ), "w" ) as inboxFp:
+         with open( Path( "fetched_messages", f"innboks_{page:03d}.htm" ), "w", encoding = "iso-8859-1"  ) as inboxFp:
             inboxFp.write( r.text )
             inboxFp.close()
       
@@ -164,7 +164,7 @@ def main():
 
       if ( r.status_code == 200 ):
       
-         with open( Path( "fetched_messages", "threads", f"melding_{thread['threadId']}_{page:03d}.htm" ), "w" ) as inboxFp:
+         with open( Path( "fetched_messages", "threads", f"melding_{thread['threadId']}_{page:03d}.htm" ), "w", encoding = "iso-8859-1"  ) as inboxFp:
             inboxFp.write( r.text )
             inboxFp.close()
          
@@ -191,7 +191,7 @@ def main():
                   threads[ thread["threadId"] ]["posts"].update( tmpPosts )
                   jsonLog[logDate]["messages"] += len( tmpPosts )
       
-                  with open( Path( "fetched_messages", "threads", f"melding_{thread['threadId']}_{page:03d}.htm" ), "w" ) as inboxFp:
+                  with open( Path( "fetched_messages", "threads", f"melding_{thread['threadId']}_{page:03d}.htm" ), "w", encoding = "iso-8859-1"  ) as inboxFp:
                      inboxFp.write( r.text )
                      inboxFp.close()
                
@@ -206,8 +206,9 @@ def main():
    term.ciSuccess( f"Lastet ned {jsonLog[logDate]['threads']} meldingstråder med {jsonLog[logDate]['messages']} meldinger på {jsonLog[logDate]['pages']} sider, {jsonLog[logDate]['inboxpages']} sider med liste over meldingstråder" )
    
    term.ciInfo( "Lagrer data i inbox.json" )
-   with open( Path( "inbox.json" ), "w") as outputFp:
-      outputFp.write( json.dumps( threads, indent=3, ensure_ascii=False) )
+   raw_json = json.dumps( threads, indent=3, ensure_ascii=False )
+   with open( Path( "inbox.json" ), "w", encoding = "utf-8" ) as outputFp:
+      outputFp.write( raw_json )
       outputFp.close()
 
    
